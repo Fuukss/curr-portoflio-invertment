@@ -117,9 +117,9 @@ def calculate(request) -> HttpResponse:
     data['portfolio_diff'] = round((data['portfolio_value'] - START_VALUE), 2)
 
     # charts titles details (percent of currency in portfolio)
-    data['portfolio_cur1'] = str(initial_weight[0] * 100) + '%'
-    data['portfolio_cur2'] = str(initial_weight[1] * 100) + '%'
-    data['portfolio_cur3'] = str(initial_weight[2] * 100) + '%'
+    data['portfolio_cur1'] = str(round(initial_weight[0] * 100, 0)) + '%'
+    data['portfolio_cur2'] = str(round(initial_weight[1] * 100, 0)) + '%'
+    data['portfolio_cur3'] = str(round(initial_weight[2] * 100, 0)) + '%'
 
     return HttpResponse(status=204)
 

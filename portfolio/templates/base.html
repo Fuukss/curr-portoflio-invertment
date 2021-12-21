@@ -85,7 +85,7 @@
         </div>
     </div>
     <div id='colors'></div>
-    <div class="d-flex justify-content-around" style="margin-bottom: 50px; margin-top: -75px">
+    <div class="d-flex justify-content-around" style="margin-bottom: 50px; margin-top: 25px">
         <input id="datepicker" width="276" placeholder="Wybierz datę" style="box-shadow: 0 0 1px;"/>
         <script>
             $('#datepicker').datepicker({
@@ -308,7 +308,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Początkowy procentowy udział waluty w portfelu',
+                            text: 'Początkowy procentowy udział walut w portfelu',
                         },
                     },
                 }
@@ -325,7 +325,7 @@
                 data: {
                     labels: response.labels,
                     datasets: [{
-                        label: 'zmiana kursu ' + response.cur1_name + ' w PLN',
+                        label: 'Zmiana portfela ' + response.cur1_name + ' w PLN',
                         data: response.histogram_cur1,
                         backgroundColor: '#6D6D6D',
                     }]
@@ -335,7 +335,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur1 + ' portfela w ' + response.cur1_name + ' w PLN',
+                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur1 + ' portfela ' + response.cur1_name + ' w PLN',
                         }
                     },
                     scales: {
@@ -372,7 +372,7 @@
                 data: {
                     labels: response.labels,
                     datasets: [{
-                        label: 'zmiana kursu ' + response.cur2_name + ' w PLN',
+                        label: 'Zmiana portfela ' + response.cur2_name + ' w PLN',
                         data: response.histogram_cur2,
                         backgroundColor: '#38B0EC',
                     }]
@@ -381,7 +381,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur2 + ' portfela w ' + response.cur2_name + ' w PLN',
+                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur2 + ' portfela ' + response.cur2_name + ' w PLN',
                         }
                     },
                     scales: {
@@ -418,7 +418,7 @@
                 data: {
                     labels: response.labels,
                     datasets: [{
-                        label: 'zmiana kursu ' + response.cur3_name + ' w PLN',
+                        label: 'Zmiana portfela ' + response.cur3_name + ' w PLN',
                         data: response.histogram_cur3,
                         backgroundColor: '#F9C253',
                     }]
@@ -427,7 +427,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur3 + ' portfela w ' + response.cur3_name + ' w PLN',
+                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur3 + ' portfela ' + response.cur3_name + ' w PLN',
                         }
                     },
                     scales: {
