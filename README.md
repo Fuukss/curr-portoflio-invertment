@@ -12,7 +12,7 @@ $ git clone git@github.com:Fuukss/curr-portoflio-invertment.git
 $ docker-compose up --build
 ```
 
-## Error starting
+## Starting error
 ```
 ERROR: ... Bind for 0.0.0.0:5432 failed: port is already allocated
 
