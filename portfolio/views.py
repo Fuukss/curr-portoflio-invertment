@@ -19,6 +19,9 @@ def index(request):
 
 
 def details(request, currency: str, percent_of_investment: str, year: str, month: str, day: str) -> HttpResponse:
+    """
+    Save data.
+    """
     new = InvestmentDetails(currency=currency, percent_of_investment=percent_of_investment, year=year, month=month,
                             day=day)
     new.save()
@@ -26,7 +29,8 @@ def details(request, currency: str, percent_of_investment: str, year: str, month
     return HttpResponse(status=204)
 
 
-def calculate(request):
+def calculate(request) -> HttpResponse:
+    """Download portfolio details data from NBP api, calculate and save into global data dictionary"""
     global data
 
     # constants
@@ -35,7 +39,7 @@ def calculate(request):
     currencies = {}
     initial_weight = []
 
-    # get last 3 objects in ORM (portfel details)
+    # get last 3 objects from ORM (portfolio details)
     investments = InvestmentDetails.objects.all().order_by('-id')[:3]
 
     # create portfolio
@@ -94,7 +98,7 @@ def calculate(request):
     data['label_weight'] = [portfolio[0][0], portfolio[1][0], portfolio[2][0]]
     data['data_weight'] = [round(value * 100, 2) for value in initial_weight]
 
-    # value at the end of portfolio
+    # value at the end of investment
     data['portfolio_value'] = data['balance_data'][-1]
 
     # data for histograms
@@ -112,14 +116,17 @@ def calculate(request):
 
     data['portfolio_diff'] = round((data['portfolio_value'] - START_VALUE), 2)
 
+    # charts titles details (percent of currency in portfolio)
     data['portfolio_cur1'] = str(initial_weight[0] * 100) + '%'
     data['portfolio_cur2'] = str(initial_weight[1] * 100) + '%'
     data['portfolio_cur3'] = str(initial_weight[2] * 100) + '%'
-
 
     return HttpResponse(status=204)
 
 
 def charts_data(request):
+    """
+    Return a global dictionary containing the details of the created portfolio
+    """
     global data
     return JsonResponse(data=data)

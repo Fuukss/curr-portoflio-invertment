@@ -170,7 +170,7 @@ $.ajax({
     }
 });
 
-// set portoflio percent for cur1
+// set portfolio percent for cur1
 var portfolio_cur1 = null;
 
 $.ajax({
@@ -181,7 +181,7 @@ $.ajax({
     }
 });
 
-// set portoflio percent for cur2
+// set portfolio percent for cur2
 var portfolio_cur2 = null;
 
 $.ajax({
@@ -192,7 +192,7 @@ $.ajax({
     }
 });
 
-// set portoflio percent for cur2
+// set portfolio percent for cur2
 var portfolio_cur3 = null;
 
 $.ajax({
