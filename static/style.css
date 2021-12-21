@@ -1,0 +1,119 @@
+body {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+#slider_cont {
+    position: relative;
+    width: 60vw;
+    margin: 5vh 20vw 10vh;
+}
+
+#slider {
+    width: 100%;
+}
+
+#slider_vals {
+    width: 100%;
+}
+
+#val1 {
+    position: absolute;
+    left: 33%;
+    color: #6D6D6D;
+}
+
+#val2 {
+    position: absolute;
+    left: 50%;
+    color: #38B0EC;
+}
+
+#val3 {
+    position: absolute;
+    left: 66%;
+    color: #F9C253;
+}
+
+.ui-slider-range {
+    background: transparent !important;
+}
+
+.ui-slider {
+    background-image: linear-gradient(90deg, #6D6D6D 0 40%, #38B0EC 40% 60%, #F9C253 60% 100%);
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.card {
+    width: 150px; /* Set width of cards */
+    display: flex; /* Children use Flexbox */
+    flex-direction: column; /* Rotate Axis */
+    flex-wrap: nowrap;
+    border: #7895a2; /* Set up Border */
+    border-radius: 4px; /* Slightly Curve edges */
+    overflow: hidden; /* Fixes the corners */
+    /* Add space between cards */
+    margin: 50px 5px 100px;
+}
+
+
+.card-header {
+    color: #000000;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: #83aaac;
+    background-color: #a5a0dd;
+    padding: 5px 10px;
+}
+
+.card-main {
+    display: flex; /* Children use Flexbox */
+    flex-direction: column; /* Rotate Axis to Vertical */
+    justify-content: center; /* Group Children in Center */
+    align-items: center; /* Group Children in Center (on cross axis) */
+    padding: 20px 0; /* Add padding to the top/bottom */
+}
+
+.material-icons {
+    font-size: 20px;
+    color: black;
+    margin-bottom: 5px;
+}
+
+.main-description {
+    color: black;
+    font-size: 24px;
+    text-align: center;
+}
+
+.datepicker-toggle {
+    display: inline-block;
+    position: relative;
+    width: 18px;
+    height: 19px;
+}
+
+.datepicker-toggle-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;base64,...');
+}
+
+#chartContainer {
+    width: 40%
+}
+
+
+#myChart2 {
+    width: 40%
+}
+
+button {
+  margin-top:30px; padding:10px 20px; border-radius:0;
+}

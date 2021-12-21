@@ -1,0 +1,470 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+    <script src="{% static 'app.js' %}" type="text/javascript"></script>
+
+</head>
+
+
+<body>
+<section class="hero is-link" style="background-color: rgb(255,98,0); opacity: 0.6;">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title" style="color: black">
+                Dashboard portfela inwestycyjnego
+            </h1>
+        </div>
+    </div>
+</section>
+
+
+<div class="content has-text-centered"
+     style="width: auto; justify-content: center; margin-top: 50px; box-shadow: inset 0 0 1em gold, 0 0 1em darkorange;">
+    <div style="margin: 5px">
+        <blockquote class="blockquote text-center">
+            <p class="mb-0">Wybierz trzy waluty i ich procentowy rozkład w przyszłym portfelu inwestycyjnym oraz datę
+                zakupu instrumentów.</p>
+            <footer class="blockquote-footer">Po wprowadzeniu danych zatwierdź przyciskiem <cite title="Source Title">"Oblicz
+                Inwestycje".</cite> Wykresy odświeżą się automatycznie po dokonaniu obliczeń
+            </footer>
+        </blockquote>
+    </div>
+
+    <div>
+        <select class="btn btn-secondary btn-lg dropdown-toggle" id="selected_currency_1"
+                style="width: 200px; height: 50px; box-shadow: 0 0 2px; margin-top: 10px">
+            <option value="" disabled selected>Wybierz walute 1</option>
+            {% for results in show_currencies %}
+                <option value="{{ results.id }}">{{ results.currency_name }}</option>
+            {% endfor %}
+        </select>
+
+        <select class="btn btn-secondary btn-lg dropdown-toggle" id="selected_currency_2"
+                style=" width: 200px; height: 50px; box-shadow: 0 0 2px; margin-top: 10px">
+            <option value="" disabled selected>Wybierz walute 2</option>
+            {% for results in show_currencies %}
+                <option value="{{ results.id }}">{{ results.currency_name }}</option>
+            {% endfor %}
+        </select>
+        <select class="btn btn-secondary btn-lg dropdown-toggle" id="selected_currency_3"
+                style="width: 200px; height: 50px; box-shadow: 0 0 2px; margin-top: 10px">
+            <option value="" disabled selected>Wybierz walute 3</option>
+            {% for results in show_currencies %}
+                <option value="{{ results.id }}">{{ results.currency_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div id='slider_cont' style="margin-top: 75px">
+        <div id='slider'></div>
+        <div id='slider_vals'>
+            <div id='val1'></div>
+            <div id='val2'></div>
+            <div id='val3'></div>
+        </div>
+    </div>
+    <div id='colors'></div>
+    <div class="d-flex justify-content-around" style="margin-bottom: 50px; margin-top: -75px">
+        <input id="datepicker" width="276" placeholder="Wybierz datę" style="box-shadow: 0 0 1px;"/>
+        <script>
+            $('#datepicker').datepicker({
+                uiLibrary: 'bootstrap4',
+                dateFormat: 'yy/mm/dd',
+                startDate: new Date('2021-11-02')
+            });
+        </script>
+        <script>
+            function update_start_date_value() {
+                var date = $("#datepicker").val();
+                return date
+            }
+        </script>
+    </div>
+
+    <button type="button" class="btn btn-secondary btn-lg" style="margin-bottom: 10px" onclick="update_website();">
+        Oblicz inwestycje
+    </button>
+
+</div>
+
+<div name="mini_cards" class="container">
+    <div class="row" style="justify-content: center;">
+        <h1 style="margin-top: 100px; margin-bottom: 50px">Dashboard</h1>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Wartość poczatkowa</div>
+                <div class="card-main">
+                    <i class="material-icons">savings</i>
+                    <div class="main-description">
+                        <script type="text/javascript">
+                            if (typeof account_balance === 'undefined') {
+                                document.write(1000)
+                            } else {
+                                document.write(start_value)
+                            }
+                        </script>
+                        PLN
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Wartość końcowa</div>
+                <div class="card-main">
+                    <i class="material-icons">account_balance_wallet</i>
+                    <div class="main-description">
+                        <script type="text/javascript">
+                            if (typeof account_balance === 'undefined') {
+                                document.write(0)
+                            } else {
+                                document.write(account_balance)
+                            }
+                        </script>
+                        PLN
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Zmiana</div>
+                <div class="card-main">
+                    <i class="material-icons">price_change</i>
+                    <div class="main-description">
+                        <script type="text/javascript">
+                            if (typeof account_changes === 'undefined') {
+                                document.write(0)
+                            } else {
+                                document.write(account_changes)
+                            }
+                        </script>
+                        %
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Zysk/ strata</div>
+                <div class="card-main">
+                    <i class="material-icons">currency_exchange</i>
+                    <div class="main-description">
+                        <script type="text/javascript">
+                            if (typeof account_diff === 'undefined') {
+                                document.write(0)
+                            } else {
+                                document.write(account_diff)
+                            }
+                        </script>
+                        PLN
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="charts" style="margin-bottom: 50px; margin-right: auto; margin-left: auto">
+        <div>
+            <canvas id="chart1"></canvas>
+        </div>
+        <div style="margin-top: 50px">
+            <canvas id="chart2"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="row" style="size: 150px; height: 350px; width: 49%; margin-right: auto">
+            <canvas id="histogram1"></canvas>
+        </div>
+        <div class="row" style="size: 150px; height: 350px; width: 49%; margin-left: auto">
+            <canvas id="histogram2"></canvas>
+        </div>
+
+        <div class="row" style="size: 150px; height: 350px; width: 49%; margin-right: auto;">
+            <canvas id="histogram3"></canvas>
+        </div>
+
+        <div class="row" style="size: 23px; height: 23px; margin-left: auto; margin-right: auto">
+            <canvas id="chart3"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    let ch1 = document.getElementById('chart1');
+    $.ajax({
+        url: '/charts/data',
+        success: function (response) {
+            new Chart(ch1, {
+                type: 'line',
+                data: {
+                    labels: response.labels,
+                    datasets: [{
+                        cubicInterpolationMode: 'monotone',
+                        data: response.cur1_data,
+                        label: response.cur1_name,
+                        backgroundColor: '#6D6D6D',
+                        borderColor: '#6D6D6D',
+                    },
+                        {
+                            cubicInterpolationMode: 'monotone',
+                            data: response.cur2_data,
+                            label: response.cur2_name,
+                            backgroundColor: '#38B0EC',
+                            borderColor: '#38B0EC',
+                        },
+                        {
+                            cubicInterpolationMode: 'monotone',
+                            data: response.cur3_data,
+                            label: response.cur3_name,
+                            backgroundColor: '#F9C253',
+                            borderColor: '#F9C253',
+                        }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Kurs walut',
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    let ch2 = document.getElementById('chart2');
+    $.ajax({
+        url: '/charts/data',
+        success: function (response) {
+            new Chart(ch2, {
+                type: 'line',
+                data: {
+                    labels: response.labels_balance,
+                    datasets: [{
+                        cubicInterpolationMode: 'monotone',
+                        data: response.balance_data,
+                        label: 'balans',
+                        backgroundColor: 'rgb(103,69,138)',
+                        borderColor: 'rgb(103,69,138)',
+                    },]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Zmiana wartości portfela',
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    let ch3 = document.getElementById('chart3');
+    $.ajax({
+        url: '/charts/data',
+        success: function (response) {
+            new Chart(ch3, {
+                type: 'doughnut',
+                data: {
+                    labels: response.label_weight,
+                    datasets: [{
+                        data: response.data_weight,
+                        backgroundColor: [
+                            '#6D6D6D',
+                            '#38B0EC',
+                            '#F9C253'
+                        ],
+                        hoverOffset: 4
+                    },]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Początkowy procentowy udział waluty w portfelu',
+                        },
+                    },
+                }
+            });
+        }
+    });
+
+    let his1 = document.getElementById('histogram1'); //.getContext('2d')
+    $.ajax({
+        url: 'charts/data',
+        success: function (response) {
+            new Chart(his1, {
+                type: 'bar',
+                data: {
+                    labels: response.labels,
+                    datasets: [{
+                        label: 'zmiana kursu ' + response.cur1_name + ' w PLN',
+                        data: response.histogram_cur1,
+                        backgroundColor: '#6D6D6D',
+                    }]
+                },
+
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur1 + ' portfela w ' + response.cur1_name + ' w PLN',
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: false,
+                            barPercentage: 1.3,
+                            ticks: {
+                                max: 3,
+                            }
+                        }, {
+                            display: true,
+                            ticks: {
+                                autoSkip: false,
+                                max: 4,
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            })
+        }
+    });
+
+    let his2 = document.getElementById('histogram2'); //.getContext('2d')
+    $.ajax({
+        url: 'charts/data',
+        success: function (response) {
+            new Chart(his2, {
+                type: 'bar',
+                data: {
+                    labels: response.labels,
+                    datasets: [{
+                        label: 'zmiana kursu ' + response.cur2_name + ' w PLN',
+                        data: response.histogram_cur2,
+                        backgroundColor: '#38B0EC',
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur2 + ' portfela w ' + response.cur2_name + ' w PLN',
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: false,
+                            barPercentage: 1.3,
+                            ticks: {
+                                max: 3,
+                            }
+                        }, {
+                            display: true,
+                            ticks: {
+                                autoSkip: false,
+                                max: 4,
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            })
+        }
+    });
+
+    let his3 = document.getElementById('histogram3'); //.getContext('2d')
+    $.ajax({
+        url: 'charts/data',
+        success: function (response) {
+            new Chart(his3, {
+                type: 'bar',
+                data: {
+                    labels: response.labels,
+                    datasets: [{
+                        label: 'zmiana kursu ' + response.cur3_name + ' w PLN',
+                        data: response.histogram_cur3,
+                        backgroundColor: '#F9C253',
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Dzienna zmiana wartości ' + response.portfolio_cur3 + ' portfela w ' + response.cur3_name + ' w PLN',
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: false,
+                            barPercentage: 1.3,
+                            ticks: {
+                                max: 3,
+                            }
+                        }, {
+                            display: true,
+                            ticks: {
+                                autoSkip: false,
+                                max: 4,
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            })
+        }
+    });
+
+
+</script>
+
+<div class="content has-text-centered" style="margin-top: 100px">
+    <p>
+        <strong>Dashboard inwestycyjny </strong> stworzona przy użyciu danych publicznych <strong>NBP</strong>
+    </p>
+</div>
+</footer>
+
+</body>
+
+</html>
