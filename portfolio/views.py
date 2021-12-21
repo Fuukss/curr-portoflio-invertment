@@ -3,7 +3,7 @@ from .models import Currencies
 from django.http import HttpResponse, JsonResponse
 from .models import InvestmentDetails
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import pandas as pd
 import numpy as np
 
@@ -22,6 +22,16 @@ def details(request, currency: str, percent_of_investment: str, year: str, month
     """
     Save data.
     """
+    start_date = datetime(int(year), int(month), int(day))
+    start_date = start_date.strftime('%Y-%m-%d')
+    today = date.today()
+    min_start_date = today - timedelta(days=int(30))
+
+    if start_date > min_start_date.strftime('%Y-%m-%d'):
+        year = min_start_date.year
+        month = min_start_date.month
+        day = min_start_date.day
+
     new = InvestmentDetails(currency=currency, percent_of_investment=percent_of_investment, year=year, month=month,
                             day=day)
     new.save()
