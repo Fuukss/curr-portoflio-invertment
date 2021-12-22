@@ -20,7 +20,7 @@ def index(request):
 
 def details(request, currency: str, percent_of_investment: str, year: str, month: str, day: str) -> HttpResponse:
     """
-    Save data.
+    Save data + set the minimum date.
     """
     start_date = datetime(int(year), int(month), int(day))
     start_date = start_date.strftime('%Y-%m-%d')
@@ -39,29 +39,57 @@ def details(request, currency: str, percent_of_investment: str, year: str, month
     return HttpResponse(status=204)
 
 
+class ConstantData:
+    """
+    Define constant data for future use.
+    """
+
+    def __init__(self):
+        # constants
+        self.START_VALUE = int(1000)
+        self.INVESTMENT_TIME = int(30)
+        self.currencies = {}
+        self.initial_weight = []
+
+
+def get_investment():
+    """
+    Get 3 the last objects from InvestmentDetails model and return data for them.
+    """
+    investments = InvestmentDetails.objects.all().order_by('-id')[:3]
+    return [investment.return_details() for investment in investments]
+
+
+def date_calculation(portfolio, investment_time):
+    """
+    Calculate end date and change format.
+    """
+    start_date = datetime(portfolio[0][2], portfolio[0][3], portfolio[0][4])
+    end_date = start_date + timedelta(days=investment_time)
+
+    # convert date time format to RR-MM-DD format
+    start_date = start_date.strftime('%Y-%m-%d')
+    end_date = end_date.strftime('%Y-%m-%d')
+
+    return start_date, end_date
+
+
 def calculate(request) -> HttpResponse:
     """Download portfolio details data from NBP api, calculate and save into global data dictionary"""
     global data
 
     # constants
-    START_VALUE = int(1000)
-    INVESTMENT_TIME = int(30)
-    currencies = {}
-    initial_weight = []
-
-    # get last 3 objects from ORM (portfolio details)
-    investments = InvestmentDetails.objects.all().order_by('-id')[:3]
+    constant_data = ConstantData()
+    START_VALUE = constant_data.START_VALUE
+    INVESTMENT_TIME = constant_data.INVESTMENT_TIME
+    currencies = constant_data.currencies
+    initial_weight = constant_data.initial_weight
 
     # create portfolio
-    portfolio = [investment.return_details() for investment in investments]
+    portfolio = get_investment()
 
     # date time formatting
-    start_date = datetime(portfolio[0][2], portfolio[0][3], portfolio[0][4])
-    end_date = start_date + timedelta(days=INVESTMENT_TIME)
-
-    # convert date time format to RR-MM-DD format
-    start_date = start_date.strftime('%Y-%m-%d')
-    end_date = end_date.strftime('%Y-%m-%d')
+    start_date, end_date = date_calculation(portfolio, INVESTMENT_TIME)
 
     for investment in portfolio:
         url = f'http://api.nbp.pl/api/exchangerates/rates/c/{investment[0]}/{start_date}/{end_date}/?format=json'
